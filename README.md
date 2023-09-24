@@ -6,3 +6,6 @@ A companion repo for the Robot Programming module, CMP9767, MSc RAS
 
 ## Workshop Tasks
  * [Workshop 1 - Introduction](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-1-%E2%80%90-Introduction)
+
+## Contribute!
+ * If you are a ROS2 pro and would like to contribute to the improvements of our robot simulator, check out this [list](https://github.com/LCAS/CMP9767_LIMO/wiki/Software-Improvements).
