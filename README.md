@@ -6,6 +6,7 @@ A companion repo for the Robot Programming module, CMP9767, MSc RAS
 
 ## Workshop Tasks
  * [Workshop 1 - Introduction](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-1-%E2%80%90-Introduction)
+ * [Workshop 2 - Introspecting your robot](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-2-%E2%80%90-Introspecting-your-robot)
 
 ## Contribute!
  * If you spot any mistakes, let us know during the workshop, on Teams or by requesting a pull request from your forked repository. 
