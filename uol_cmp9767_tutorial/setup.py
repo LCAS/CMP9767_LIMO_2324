@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            'tf_listener = uol_cmp9767_tutorial.tf_listener:main'
+            'tf_listener = uol_cmp9767_tutorial.tf_listener:main',
+            'mover = uol_cmp9767_tutorial.mover:main'
         ],
     },
 )
