@@ -21,7 +21,8 @@ setup(
     entry_points={
         'console_scripts': [
             'tf_listener = uol_cmp9767_tutorial.tf_listener:main',
-            'mover = uol_cmp9767_tutorial.mover:main'
+            'mover = uol_cmp9767_tutorial.mover:main',
+            'opencv_test = uol_cmp9767_tutorial.opencv_test:main'
         ],
     },
 )
