@@ -22,6 +22,7 @@ setup(
         'console_scripts': [
             'tf_listener = uol_cmp9767_tutorial.tf_listener:main',
             'mover = uol_cmp9767_tutorial.mover:main',
+            'mover_with_pose = uol_cmp9767_tutorial.mover_with_pose:main',
             'opencv_test = uol_cmp9767_tutorial.opencv_test:main'
         ],
     },
