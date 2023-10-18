@@ -15,10 +15,15 @@ class ImageConverter(Node):
     def __init__(self):
         super().__init__('opencv_test')
         self.bridge = CvBridge()
+	self.qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            history=QoSHistoryPolicy.KEEP_LAST,
+            depth=1
+        )
         self.image_sub = self.create_subscription(Image, 
                                                     "/limo/depth_camera_link/image_raw",
                                                     self.image_callback,
-                                                    10)
+                                                    qos_profile=self.qos_profile) # Set QoS Profile
         
     def image_callback(self, data):
         namedWindow("Image window")
