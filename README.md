@@ -10,6 +10,7 @@ A companion repo for the Robot Programming module, CMP9767, MSc RAS
  * [Workshop 3 - TF and Sensors](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-3-%E2%80%90-TFs-and-Sensors)
  * [Workshop 4 - Vision Sensors](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-4-%E2%80%90-Vision-Sensors)
  * [Workshop 5 - Simulation and workspaces](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-5-%E2%80%90-Simulation-and-workspaces)
+ * [Workshop 6 - Navigation](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-6-%E2%80%90-Navigation)
 
 ## Contribute!
  * If you spot any mistakes, let us know during the workshop, on Teams or by requesting a pull request from your forked repository. 
