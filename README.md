@@ -13,6 +13,7 @@ A companion repo for the Robot Programming module, CMP9767, MSc RAS
  * Week 6 - Enhancement Week
  * [Workshop 7 - Navigation](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-7-%E2%80%90-Navigation)
  * [Workshop 8 - Localization](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-8-%E2%80%90-Localization)
+ * [Workshop 9 ‐ Robot Vision](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-9-%E2%80%90-Robot-Vision)
 
 ## Contribute!
  * If you spot any mistakes, let us know during the workshop, on Teams or by requesting a pull request from your forked repository. 
