@@ -1,5 +1,6 @@
 import rclpy
 from rclpy.node import Node
+from rclpy import qos
 from cv2 import namedWindow, cvtColor, imshow, inRange
 
 from cv2 import destroyAllWindows, startWindowThread
@@ -15,15 +16,10 @@ class ImageConverter(Node):
     def __init__(self):
         super().__init__('opencv_test')
         self.bridge = CvBridge()
-	self.qos_profile = QoSProfile(
-            reliability=QoSReliabilityPolicy.BEST_EFFORT,
-            history=QoSHistoryPolicy.KEEP_LAST,
-            depth=1
-        )
         self.image_sub = self.create_subscription(Image, 
                                                     "/limo/depth_camera_link/image_raw",
                                                     self.image_callback,
-                                                    qos_profile=self.qos_profile) # Set QoS Profile
+                                                    qos_profile=qos.qos_profile_sensor_data) # Set QoS Profile
         
     def image_callback(self, data):
         namedWindow("Image window")
