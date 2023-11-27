@@ -1,50 +1,61 @@
-#!/usr/bin/env python
-
 # Python libs
-import sys, time
+import rclpy
+from rclpy.node import Node
+from rclpy import qos
 
 # OpenCV
 import cv2
 
-# Ros libraries
-import roslib, rospy, image_geometry, tf
+# ROS libraries
+import image_geometry
+from tf2_ros import Buffer, TransformListener
 
-# Ros Messages
+# ROS Messages
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import PoseStamped
 from cv_bridge import CvBridge, CvBridgeError
+from tf2_geometry_msgs import do_transform_pose
 
-class image_projection:
+class ImageProjection(Node):
     camera_model = None
     image_depth_ros = None
 
     visualisation = True
     # aspect ration between color and depth cameras
-    # calculated as (color_horizontal_FOV/color_width) / (depth_horizontal_FOV/depth_width) from the kinectv2 urdf file
-    # (84.1/1920) / (70.0/512)
-    color2depth_aspect = (84.1/1920) / (70.0/512)
+    # calculated as (color_horizontal_FOV/color_width) / (depth_horizontal_FOV/depth_width) from the dabai camera parameters
+    color2depth_aspect = (71.0/640) / (67.9/400)
 
     def __init__(self):    
-
+        super().__init__('image_projection_3')
         self.bridge = CvBridge()
 
-        self.camera_info_sub = rospy.Subscriber('/thorvald_001/kinect2_front_camera/hd/camera_info', 
-            CameraInfo, self.camera_info_callback)
+        self.camera_info_sub = self.create_subscription(CameraInfo, '/limo/depth_camera_link/camera_info',
+                                                self.camera_info_callback, 
+                                                qos_profile=qos.qos_profile_sensor_data)
+        
+        self.object_location_pub = self.create_publisher(PoseStamped, '/limo/object_location', 10)
 
-        self.object_location_pub = rospy.Publisher('/thorvald_001/object_location', PoseStamped, queue_size=10)
+        self.image_sub = self.create_subscription(Image, '/limo/depth_camera_link/image_raw', 
+                                                  self.image_color_callback, qos_profile=qos.qos_profile_sensor_data)
+        
+        self.image_sub = self.create_subscription(Image, '/limo/depth_camera_link/depth/image_raw', 
+                                                  self.image_depth_callback, qos_profile=qos.qos_profile_sensor_data)
+        
+        self.tf_buffer = Buffer()
+        self.tf_listener = TransformListener(self.tf_buffer, self)
 
-        rospy.Subscriber("/thorvald_001/kinect2_front_camera/hd/image_color_rect",
-            Image, self.image_color_callback)
-
-        rospy.Subscriber("/thorvald_001/kinect2_front_sensor/sd/image_depth_rect",
-            Image, self.image_depth_callback)
-
-        self.tf_listener = tf.TransformListener()
+    def get_tf_transform(self, target_frame, source_frame):
+        try:
+            transform = self.tf_buffer.lookup_transform(target_frame, source_frame, rclpy.time.Time())
+            return transform
+        except Exception as e:
+            self.get_logger().warning(f"Failed to lookup transform: {str(e)}")
+            return None
 
     def camera_info_callback(self, data):
-        self.camera_model = image_geometry.PinholeCameraModel()
+        if not self.camera_model:
+            self.camera_model = image_geometry.PinholeCameraModel()
         self.camera_model.fromCameraInfo(data)
-        self.camera_info_sub.unregister() #Only subscribe once
 
     def image_depth_callback(self, data):
         self.image_depth_ros = data
@@ -65,8 +76,9 @@ class image_projection:
             print(e)
 
 
-        # detect a red blob in the color image
-        image_mask = cv2.inRange(image_color, (0, 0, 80), (20, 20, 255))
+        # detect a color blob in the color image
+        # provide the right values, or even better do it in HSV
+        image_mask = cv2.inRange(image_color, (0, 0, 0), (255, 255, 255))
 
         # calculate moments of the binary image
         M = cv2.moments(image_mask)
@@ -87,7 +99,6 @@ class image_projection:
         print('depth coords: ', depth_coords)
         print('depth value: ', depth_value)
 
-
         # calculate object's 3d location in camera coords
         camera_coords = self.camera_model.projectPixelTo3dRay((image_coords[1], image_coords[0])) #project the image coords (x,y) into 3D ray in camera coords 
         camera_coords = [x/camera_coords[2] for x in camera_coords] # adjust the resulting vector so that z = 1
@@ -97,22 +108,20 @@ class image_projection:
 
         #define a point in camera coordinates
         object_location = PoseStamped()
-        object_location.header.frame_id = "thorvald_001/kinect2_front_rgb_optical_frame"
+        object_location.header.frame_id = "depth_link"
         object_location.pose.orientation.w = 1.0
         object_location.pose.position.x = camera_coords[0]
         object_location.pose.position.y = camera_coords[1]
         object_location.pose.position.z = camera_coords[2]
 
         # publish so we can see that in rviz
-        self.object_location_pub.publish(object_location)
-        
+        self.object_location_pub.publish(object_location)        
 
-        # print out the coordinates in the map frame
-        p_camera = self.tf_listener.transformPose('map', object_location)
+        # print out the coordinates in the odom frame
+        transform = self.get_tf_transform('depth_link', 'odom')
+        p_camera = do_transform_pose(object_location.pose, transform)
 
-        print('map coords: ', p_camera.pose.position)
-        print('')
-
+        print('odom coords: ', p_camera.position)
 
         if self.visualisation:
             # draw circles
@@ -127,15 +136,12 @@ class image_projection:
             cv2.imshow("image color", image_color)
             cv2.waitKey(1)
 
-def main(args):
-    '''Initializes and cleanup ros node'''
-    rospy.init_node('image_projection', anonymous=True)
-    ic = image_projection()
-    try:
-        rospy.spin()
-    except KeyboardInterrupt:
-        print("Shutting down")
-    cv2.destroyAllWindows()
+def main(args=None):
+    rclpy.init(args=args)
+    image_projection = ImageProjection()
+    rclpy.spin(image_projection)
+    image_projection.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
-    main(sys.argv)
+    main()
