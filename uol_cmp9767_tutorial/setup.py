@@ -23,7 +23,10 @@ setup(
             'tf_listener = uol_cmp9767_tutorial.tf_listener:main',
             'mover = uol_cmp9767_tutorial.mover:main',
             'mover_with_pose = uol_cmp9767_tutorial.mover_with_pose:main',
-            'opencv_test = uol_cmp9767_tutorial.opencv_test:main'
+            'opencv_test = uol_cmp9767_tutorial.opencv_test:main',
+            'image_projection_1 = uol_cmp9767_tutorial.image_projection_1:main',
+            'image_projection_2 = uol_cmp9767_tutorial.image_projection_2:main',
+            'image_projection_3 = uol_cmp9767_tutorial.image_projection_3:main',
         ],
     },
 )
