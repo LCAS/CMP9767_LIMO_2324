@@ -47,7 +47,7 @@ class ImageProjection(Node):
             return
 
         #show the camera pose with respect to the robot's pose (base_link)
-        transform = self.get_tf_transform('depth_camera_link', 'base_link')
+        transform = self.get_tf_transform('depth_link', 'base_link')
         if transform:
             print('Robot to camera transform:', 'T ', transform.transform.translation, 'R ', transform.transform.rotation)
         else:
@@ -57,10 +57,11 @@ class ImageProjection(Node):
         p_robot = PoseStamped()
         p_robot.header.frame_id = "base_link"
         p_robot.pose.orientation.w = 1.0
-        #specify a point 5 m in front of the robot (centre)
+        # specify a point 5 m in front of the robot (centre, ground)
+        # base_link is 0.145 m above the ground
         p_robot.pose.position.x = 5.0
         p_robot.pose.position.y = 0.0
-        p_robot.pose.position.z = 0.0
+        p_robot.pose.position.z = -0.145
         p_camera = do_transform_pose(p_robot.pose, transform)
         print('Point in the camera coordinates')
         print(p_camera.position)        

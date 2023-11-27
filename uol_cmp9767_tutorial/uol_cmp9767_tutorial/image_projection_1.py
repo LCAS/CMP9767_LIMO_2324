@@ -32,7 +32,7 @@ class ImageProjection(Node):
         if not self.camera_model:
             return
         
-        #project a point in camera coordinates into the pixel coordinates
+        # project a point in camera coordinates (-1.0 : 1.0) into the pixel coordinates
         uv = self.camera_model.project3dToPixel((0.0, 0.0, 1.0))
 
         print('Pixel coordinates: ', uv)
