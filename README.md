@@ -16,6 +16,7 @@ A companion repo for the Robot Programming module, CMP9767, MSc RAS
  * [Workshop 9 ‐ Robot Vision](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-9-%E2%80%90-Robot-Vision)
  * [Workshop 10 ‐ Image Geometry](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-10-%E2%80%90-Image-Geometry)
  * [Workshop 11 ‐ Mapping](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-11-%E2%80%90-Mapping)
+ * [workshop 12 - Assignment Support](https://github.com/LCAS/CMP9767_LIMO/wiki/Workshop-12-%E2%80%90-Assignment-Support)
 
 ## Contribute!
  * If you spot any mistakes, let us know during the workshop, on Teams or by requesting a pull request from your forked repository. 
