@@ -1,0 +1,13 @@
+material PotholesSimple/BackgroundPotholesSimple 
+{
+    technique
+    {
+        pass
+        {
+            texture_unit
+            {
+                texture background_potholes_simple.png
+            }
+        }
+    }
+}
