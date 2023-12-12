@@ -187,13 +187,13 @@ controller_server:
 global_costmap:
   global_costmap:
     ros__parameters:
-      footprint_padding: 0.03
+      footprint_padding: 0.00
       update_frequency: 1.0
       publish_frequency: 1.0
       global_frame: map
       robot_base_frame: base_link
       use_sim_time: True
-      robot_radius: 0.12 # radius set and used, so no footprint points
+      robot_radius: 0.10 # radius set and used, so no footprint points
       resolution: 0.02
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       obstacle_layer:
